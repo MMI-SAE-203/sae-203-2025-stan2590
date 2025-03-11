@@ -9,6 +9,21 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.4.2"
-  }
+    "@astrojs/node": "^9.1.2",
+    "astro": "^5.4.2",
+    "pocketbase": "^0.25.2"
+  },
+  "description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/_DENqoZ4)\r Nom: \r Prenom: \r URL netlify:",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MMI-SAE-203/sae-203-2025-stan2590.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MMI-SAE-203/sae-203-2025-stan2590/issues"
+  },
+  "homepage": "https://github.com/MMI-SAE-203/sae-203-2025-stan2590#readme"
 }

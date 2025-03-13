@@ -1,0 +1,57 @@
+---
+import Logo from '../assets/logo.png';
+import MenuButton from '../components/MenuButton.astro';
+
+
+let isMenuOpen = false;
+
+// Fonction qui toggle l'état du menu
+function toggleMenu() {
+  isMenuOpen = !isMenuOpen;
+}
+---
+
+<header class="fixed top-0 left-0 w-full bg-yellow-400 border-b-2 border-indigo-100 flex items-center justify-between px-6 py-4 z-50">
+  <a href="/"> 
+    <img src={Logo.src} alt="Logo" class="h-10" />
+  </a>
+  
+
+  <!-- Bouton Menu Burger -->
+  
+
+  <!-- Navigation -->
+  <nav
+    id="menu"
+    class={`fixed inset-0 bg-beige flex flex-col items-center justify-center transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} lg:static lg:flex lg:flex-row lg:translate-x-0`}
+    aria-hidden={!isMenuOpen}
+  >
+    <ul class="text-center lg:flex lg:gap-6">
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/films">Les Films</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/le programme">Le Programme</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/info pratique">Infos Pratiques</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/reservé ma place">Réserver ma place</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/invités">Invités</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/a propos">À Propos</a></li>
+      <li><a class="block px-4 py-2 text-black hover:text-blue-500" href="/nous contacter">Nous Contacter</a></li>
+    </ul>
+    
+    <div class="mt-4 lg:mt-0 flex gap-4">
+
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector("#menu-btn");
+  const nav = document.querySelector("#menu");
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", !isOpen);
+      nav.setAttribute("aria-hidden", isOpen);
+      nav.classList.toggle("translate-x-0");
+    });
+  }
+</script>

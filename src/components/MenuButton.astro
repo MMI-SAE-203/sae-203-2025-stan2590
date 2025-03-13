@@ -1,0 +1,19 @@
+---
+// Composant MenuButton.astro
+const { ariaExpanded, onClick } = Astro.props;
+---
+
+<button
+  class="lg:hidden flex flex-col items-center justify-between w-8 h-8 border-none bg-transparent cursor-pointer"
+  aria-expanded={ariaExpanded}
+  aria-label="Menu"
+  onClick={onClick}
+>
+  <!-- Barre du haut -->
+  <span class={`block w-6 h-1 bg-black transition-all duration-300 ${ariaExpanded === 'true' ? 'rotate-45 translate-y-1' : ''}`}></span>
+  <!-- Barre du milieu -->
+  <span class={`block w-6 h-1 bg-black transition-all duration-300 ${ariaExpanded === 'true' ? 'opacity-0' : 'opacity-100'}`}></span>
+  <!-- Barre du bas -->
+  <span class={`block w-6 h-1 bg-black transition-all duration-300 ${ariaExpanded === 'true' ? '-rotate-45 -translate-y-1' : ''}`}></span>
+</button>
+

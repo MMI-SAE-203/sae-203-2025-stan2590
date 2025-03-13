@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { datefilm } from '../js/backend.mjs';
+import Card from '../components/card.astro';
+import { Picture } from 'astro:assets';
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase('http://127.0.0.1:8090'); // Connexion PocketBase
+const films = await datefilm();
+
+---
+
+<Layout title="Films">
+  <section class="p-6">
+    <h1 class="text-3xl font-bold mb-6">Liste des Films</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {films.map(film => (
+        <Card 
+          title={film.titre} 
+          date={film.date}
+          description={film.description} 
+          image={film.image} 
+          url={`/films/${film.id}`} 
+        />
+        
+      ))}
+    </div>
+  </section>
+</Layout>
+

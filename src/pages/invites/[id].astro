@@ -1,0 +1,62 @@
+---
+import PocketBase from 'pocketbase';
+import Layout from '../../layouts/Layout.astro'; // Import du layout
+import { Picture } from 'astro:assets';
+import { oneID } from '../../js/backend.mjs';
+
+export async function getStaticPaths() {
+    const pb = new PocketBase('http://127.0.0.1:8090'); 
+    const invites = await pb.collection('invites').getFullList();
+
+    return invites.map(invite => ({
+        params: { id: invite.id }
+    }));
+}
+
+// Récupérer l'ID de l'URL
+const { id } = Astro.params;
+
+// Déclarer pb pour la récupération des données de l'invité
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+let invite = null;
+try {
+    invite = await pb.collection('invites').getOne(id);
+} catch (error) {
+    console.error("Erreur lors de la récupération de l'invité :", error);
+}
+
+// Gestion de l'image de l'invité
+const { record = invite, field = "photo", alt, classPicture, classImg, thumb = "1024x1024" } = Astro.props;
+const imageUrl = record?.[field] ? pb.files.getURL(record, record[field], { thumb }) : null;
+---
+
+<Layout>
+    {invite ? (
+      <div class="invites-details p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-4 text-center">{invite.titre}</h1>
+        <p class="text-xl font-blod">{invite.role}</p>
+        {imageUrl ? (
+          <Picture 
+            pictureAttributes={{ class: classPicture }} 
+            class={classImg}
+            inferSize={true} 
+            formats={['png', 'webp']} 
+            alt={alt || `${invite.prenom} ${invite.nom}`} 
+            src={imageUrl} 
+          />
+        ) : (
+          <div class={classPicture + " w-full h-64 flex items-center justify-center bg-gray-200"}>
+            <span class="text-gray-500">Image non disponible</span>
+          </div>
+        )}
+        <p class="text-xl font-blod">{invite.nom}</p>
+        <p class="text-xl font-blod">{invite.prenom}</p>
+        <p class="text-lg text-gray-700">{invite.biographie}</p>
+      </div>
+    ) : (
+      <p class="text-center text-red-500 text-xl mt-10">Invité non trouvé</p>
+    )}
+</Layout>
+
+

@@ -6,8 +6,8 @@ import PocketBase from 'pocketbase';
 import { Picture } from 'astro:assets';
 
 const pb = new PocketBase('http://127.0.0.1:8090'); // Connexion PocketBase
-const invites = await listeinvites();
-const { record = invites, field = "photo", alt, classPicture, classImg, thumb = "1024x1024" } = Astro.props;
+const invites = await listeinvites(); // Renomme `invite` en `invites` pour montrer que c'est un tableau
+const { field = "photo", alt, classPicture, classImg, thumb = "1024x1024" } = Astro.props;
 ---
 
 <Layout title="Invités">
@@ -15,40 +15,34 @@ const { record = invites, field = "photo", alt, classPicture, classImg, thumb = 
     <h1 class="text-3xl font-bold mb-6">Nos Invités</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {invites.map(invite => {
-        // Calculer l'URL de l'image pour chaque invité
-        const imageUrl = invite?.[field] ? pb.files.getURL(invite, invite[field], { thumb }) : null;
+        const imageUrl = invite?.id && invite?.photo 
+          ? pb.files.getURL(invite, invite.photo, { thumb }) 
+          : null;
 
-        // Si l'image existe, on l'affiche avec le composant <Picture>
-        const inviteImageUrl = imageUrl ? (
-          <div class="flex justify-center">
-            <Picture 
-              pictureAttributes={{ class: classPicture }} 
-              class={classImg}
-              inferSize={true} 
-              formats={['png', 'webp']} 
-              alt={alt || `${invite.prenom} ${invite.nom}`} 
-              src={imageUrl} 
-            />
-          </div>
-        ) : (
-          <div class={classPicture + " w-full h-64 flex items-center justify-center bg-gray-200"}>
-            <span class="text-gray-500">Image non disponible</span>
-          </div>
-        );
-
-        // Retourner le composant <Card> avec toutes les données
         return (
           <Card 
             title={`${invite.prenom} ${invite.nom}`} 
             description={invite.bio} 
-            imageUrl={inviteImageUrl} 
+            imageUrl={imageUrl} 
             url={`/invites/${invite.id}`} 
-          />
+          >
+            {imageUrl ? (
+              <Picture 
+                pictureAttributes={{ class: classPicture }} 
+                class={classImg}
+                inferSize={true} 
+                formats={['png', 'webp']} 
+                alt={alt || `${invite.prenom} ${invite.nom}`} 
+                src={imageUrl} 
+              />
+            ) : (
+              <div class={`${classPicture} w-full h-64 flex items-center justify-center bg-gray-200`}>
+                <span class="text-gray-500">Image non disponible</span>
+              </div>
+            )}
+          </Card>
         );
       })}
     </div>
   </section>
 </Layout>
-
-
-

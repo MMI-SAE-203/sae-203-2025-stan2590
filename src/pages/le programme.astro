@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro"
+import programme from '../assets/image (1).png';
+---
+
+
+<Layout>
+    <div class="hero hero--home relative">
+        <!-- Image de l'en-tête -->
+        <img class="hero__img w-full h-auto object-cover" src="/assets/image 1.png" alt="Festival image" />
+        
+        <!-- Titre principal -->
+        <h2 class="hero__title hero__title--home text-4xl sm:text-5xl font-bold text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          lieu et date
+        </h2>
+      
+        <!-- Description -->
+        <p class="hero__chapo text-lg sm:text-xl text-white mt-6 max-w-3xl mx-auto text-center px-4">
+          Ça va trai'ler se déroulera du 15 au 21 avril 2025, en plein cœur du printemps, pour profiter pleinement du beau temps et de la nature.
+      
+          Les projections et activités se tiendront dans le parc de la douce lieux emblématiques de Belfort, offrant un cadre unique où cinéma et plein air se rencontrent.
+      
+          Ne manquez pas cette occasion exceptionnelle de vivre le festival dans des cadres naturels et culturels d'exception !
+        </p>
+      
+        <!-- Image supplémentaire -->
+        <img src={programme.src} alt="image" class="absolute inset-0 w-full h-full object-cover" />
+        
+        <!-- Bouton avec lien -->
+        <div class="flex justify-center mt-6">
+          <a class="btn bg-blue-600 text-white py-3 px-6 rounded-lg text-lg" href="https://www.google.fr/maps/place/Parc+de+la+Douce/@47.6304056,6.7994517,13z/data=!4m10!1m2!2m1!1sbelfort+parc!3m6!1s0x47923c7d58b56a03:0x4685f1b0576de9c2!8m2!3d47.6304056!4d6.8344706!15sCgxiZWxmb3J0IHBhcmNaDiIMYmVsZm9ydCBwYXJjkgEEcGFya5oBJENoZERTVWhOTUc5blMwVkpRMEZuU1VOd2JFNURRVE5uUlJBQuABAPoBBAgAECU!16s%2Fg%2F11b82724zz?entry=ttu&g_ep=EgoyMDI0MTIwOC4wIKXMDSoASAFQAw%3D%3D">
+            Voir
+          </a>
+        </div>
+      </div>
+      
+      <section class="section py-16">
+        <header class="section__header intro text-center">
+          <!-- Titre "Hébergement et transport" -->
+          <h2 class="intro__title text-3xl font-bold mb-4">Hébergement et transport</h2>
+      
+          <!-- Chapo de la section -->
+          <p class="intro__chapo text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
+            Le festival se déroule à Belfort, une ville facilement accessible et offrant diverses options d’hébergement. Vous pouvez séjourner dans l’un des nombreux hôtels confortables du centre-ville, choisir un camping convivial en pleine nature ou opter pour des gîtes et locations saisonnières.
+            
+            Pour le transport, Belfort est desservie par la gare TGV Belfort-Montbéliard et l’autoroute A36. Des navettes, des parkings dédiés, ainsi que des solutions de covoiturage et d’itinéraires cyclables faciliteront vos déplacements vers le site du festival.
+          </p>
+        </header>
+      
+        <!-- FAQ -->
+        <div class="intro__faq mt-12">
+          <h2 class="intro__title text-3xl font-bold mb-4 text-center">FAQ : Questions fréquentes</h2>
+      
+          <p class="intro__chapo text-lg sm:text-xl text-gray-700 max-w-3xl mx-auto">
+            <strong>Où se déroule le festival ?</strong><br />
+            Le festival a lieu dans la ville de Belfort, au pied de la célèbre citadelle et proche du centre historique.
+            <br /><br />
+            
+            <strong>Comment rejoindre le site depuis la gare ?</strong><br />
+            Des navettes spéciales ou des transports en commun permettent de rejoindre facilement le site du festival.
+            <br /><br />
+            
+            <strong>Quels sont les horaires du festival ?</strong><br />
+            Retrouvez le programme détaillé sur notre page dédiée Programme.
+            <br /><br />
+      
+            Pour toute autre question, contactez-nous directement.
+          </p>
+        </div>
+      </section>
+  
+</Layout>

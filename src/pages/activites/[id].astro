@@ -1,0 +1,62 @@
+---
+import PocketBase from 'pocketbase';
+import Layout from '../../layouts/Layout.astro'; // Import du layout
+import { Picture } from 'astro:assets';
+import { oneIDActivites } from '../../js/backend.mjs';
+
+export async function getStaticPaths() {
+  const pb = new PocketBase('http://127.0.0.1:8090'); 
+  const activites = await pb.collection('activites').getFullList();
+
+  return activites.map(activites => ({
+    params: { id: activites.id }
+  }));
+}
+
+// Récupérer l'ID de l'URL
+const { id } = Astro.params;
+
+// Déclarer pb pour la récupération des données du film
+const pb = new PocketBase('http://127.0.0.1:8090');
+
+let activites = null;
+try {
+  activites = await pb.collection('activites').getOne(id);
+} catch (error) {
+  console.error("Erreur lors de la récupération du activites :", error);
+}
+const { record = activites, field = "photo", alt, classPicture, classImg, thumb = "1024x1024" } = Astro.props;
+const imageUrl = record?.[field] ? pb.files.getURL(record, record[field], { thumb }) : null;
+---
+
+<Layout>
+  {activites ? (
+  <div class="activites-details p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-4 text-center">{activites.titre}</h1>
+    
+
+    
+    {imageUrl ? (
+    <div class="flex justify-center">
+      <Picture 
+      pictureAttributes={{ class: classPicture }} 
+      class={classImg}
+      inferSize={true} 
+      formats={['png', 'webp']} 
+      alt={alt || `${activites.prenom} ${activites.nom}`} 
+      src={imageUrl} 
+      />
+    </div>
+    ) : (
+    <div class={classPicture + " w-full h-64 flex items-center justify-center bg-gray-200"}>
+      <span class="text-gray-500">Image non disponible</span>
+    </div>
+    )}
+    <p class="text-xl font-bold text-center">{activites.type}</p>
+    <p class="text-xl font-bold">{activites.date_activites}</p>
+    <p class="text-lg text-gray-700">{activites.description}</p>
+  </div>
+  ) : (
+  <p class="text-center text-red-500 text-xl mt-10">Invité non trouvé</p>
+  )}
+</Layout>

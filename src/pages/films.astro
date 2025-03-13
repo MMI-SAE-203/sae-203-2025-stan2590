@@ -2,29 +2,65 @@
 import Layout from '../layouts/Layout.astro';
 import { datefilm } from '../js/backend.mjs';
 import Card from '../components/card.astro';
-import { Picture } from 'astro:assets';
 import PocketBase from 'pocketbase';
 
 const pb = new PocketBase('http://127.0.0.1:8090'); // Connexion PocketBase
-const films = await datefilm();
 
+// Récupération des films avec await
+let films = [];
+try {
+  films = await datefilm();
+} catch (error) {
+  console.error("Erreur lors de la récupération des films:", error);
+}
+
+// Récupération correcte de la catégorie depuis l'URL
+const categorie = Astro.url.searchParams.get("categorie");
+
+// Filtrage des films en fonction de la catégorie sélectionnée
+const filmsFiltres = films.filter(film => {
+  return categorie ? film.categorie.toLowerCase() === categorie.toLowerCase() : true;
+});
 ---
 
 <Layout title="Films">
   <section class="p-6">
     <h1 class="text-3xl font-bold mb-6">Liste des Films</h1>
+
+    <!-- Formulaire de filtrage -->
+    <div class="mb-6">
+      <form action="/films" method="get" class="flex space-x-4">
+        <select name="categorie" class="p-2 border rounded">
+          <option value="">Filtrer par catégorie</option>
+          <option value="Action" {categorie === 'Action' ? 'selected' : ''}>Action</option>
+          <option value="biographie" {categorie === 'biographie' ? 'selected' : ''}>biographie</option>
+          <option value="humour" {categorie === 'humour' ? 'selected' : ''}>humour</option>
+          <option value="aventure" {categorie === 'aventure' ? 'selected' : ''}>aventure</option>
+        </select>
+
+        <button type="submit" class="p-2 bg-blue-500 text-white rounded">Filtrer</button>
+      </form>
+    </div>
+
+    <!-- Affichage des films filtrés -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {films.map(film => (
-        <Card 
-          title={film.titre} 
-          date={film.date}
-          description={film.description} 
-          image={film.image} 
-          url={`/films/${film.id}`} 
-        />
-        
-      ))}
+      {filmsFiltres.length > 0 ? (
+        filmsFiltres.map(film => (
+          <Card 
+            key={film.id}
+            title={film.titre} 
+            date={film.date}
+            description={film.description} 
+            image={film.photo} 
+            url={`/films/${film.id}`} 
+          />
+        ))
+      ) : (
+        <p>Aucun film trouvé pour ce filtre.</p>
+      )}
     </div>
   </section>
 </Layout>
+
+
 
